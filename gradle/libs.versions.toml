@@ -1,7 +1,7 @@
 [versions]
 agp = "9.0.1"
-kotlin = "2.0.21"
-ksp = "2.0.21-1.0.28"
+kotlin = "2.2.10"
+ksp = "2.2.10-2.0.2"
 coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -13,9 +13,11 @@ room = "2.7.1"
 paging = "3.3.6"
 okhttp = "4.12.0"
 retrofit = "2.11.0"
-kotlinxSerialization = "1.8.1"
+kotlinxSerialization = "1.9.0"
 coroutines = "1.10.2"
 biometric = "1.1.0"
+securityCrypto = "1.1.0"
+annotationExperimental = "1.5.1"
 jetbrainsKotlinJvm = "2.2.10"
 appcompat = "1.8.0"
 material = "1.14.0"
@@ -47,10 +49,13 @@ androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "biometric" }
+androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
+androidx-annotation-experimental = { group = "androidx.annotation", name = "annotation-experimental", version.ref = "annotationExperimental" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 

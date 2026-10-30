@@ -72,7 +72,6 @@ dependencies {
 
     // Networking
     implementation(libs.okhttp)
-    implementation(libs.retrofit)
     implementation(libs.okhttp.mockwebserver)
 
     // Room
