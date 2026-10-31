@@ -98,6 +98,8 @@ dependencies {
 
     // Biometric
     implementation(libs.androidx.biometric)
+    // On API 26-27 the library's fingerprint dialog needs an AppCompat theme.
+    implementation(libs.androidx.appcompat)
 
     // Testing
     testImplementation(libs.junit)

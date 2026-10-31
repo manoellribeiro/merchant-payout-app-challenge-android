@@ -3,18 +3,24 @@ package com.example.androidinterview.screens.payout
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.androidinterview.core.biometric.BiometricResult
 import com.example.androidinterview.core.formatting.toCurrencyText
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import manoellribeiro.dev.domain.model.Currency
+import manoellribeiro.dev.domain.model.Money
 import manoellribeiro.dev.domain.usecase.CreatePayoutUseCase
 import manoellribeiro.dev.domain.usecase.IsPayoutFormCompleteUseCase
 import manoellribeiro.dev.domain.usecase.MaskIbanUseCase
 import manoellribeiro.dev.domain.usecase.ObserveIsOnlineUseCase
 import manoellribeiro.dev.domain.usecase.ParsePayoutAmountUseCase
+import manoellribeiro.dev.domain.usecase.ShouldRequestBiometricUseCase
 import manoellribeiro.dev.domain.usecase.ValidateIbanUseCase
 
 class PayoutViewModel(
@@ -23,15 +29,20 @@ class PayoutViewModel(
     private val parsePayoutAmount: ParsePayoutAmountUseCase,
     private val validateIban: ValidateIbanUseCase,
     private val maskIban: MaskIbanUseCase,
+    private val shouldRequestBiometric: ShouldRequestBiometricUseCase,
     private val createPayout: CreatePayoutUseCase,
     private val observeIsOnline: ObserveIsOnlineUseCase,
 ) : ViewModel() {
 
     private var isOnline = true
     private var observeIsOnlineJob: Job? = null
+    private var isAwaitingBiometric = false
 
     private val _uiState: MutableStateFlow<PayoutUiState> = MutableStateFlow(savedForm())
     val uiState: StateFlow<PayoutUiState> = _uiState.asStateFlow()
+
+    private val _events = MutableSharedFlow<PayoutEvent>()
+    val events: SharedFlow<PayoutEvent> = _events.asSharedFlow()
 
     private fun emitNewState(newState: PayoutUiState) {
         _uiState.value = newState
@@ -98,8 +109,31 @@ class PayoutViewModel(
         if (confirmation.isSubmitting || !form.isOnline) return
         val amount = parsePayoutAmount(form.amount, form.currency) ?: return
         emitForm(form.copy(confirmation = confirmation.copy(isSubmitting = true)))
+        if (shouldRequestBiometric(amount)) {
+            isAwaitingBiometric = true
+            viewModelScope.launch { _events.emit(PayoutEvent.RequestBiometric) }
+        } else {
+            sendPayout(amount, form.iban)
+        }
+    }
+
+    fun onBiometricResult(result: BiometricResult) {
+        // Only the prompt this ViewModel asked for can release a payout.
+        if (!isAwaitingBiometric) return
+        isAwaitingBiometric = false
+        val failureReason = result.mapToPayoutFailureReason()
+        if (failureReason != null) {
+            emitNewState(PayoutUiState.Failure(failureReason))
+            return
+        }
+        val form = _uiState.value as? PayoutUiState.Form ?: return
+        val amount = parsePayoutAmount(form.amount, form.currency) ?: return
+        sendPayout(amount, form.iban)
+    }
+
+    private fun sendPayout(amount: Money, iban: String) {
         viewModelScope.launch {
-            createPayout(amount, form.iban).fold(
+            createPayout(amount, iban).fold(
                 onSuccess = { payout ->
                     // Cleared now, so process death can't bring back the form of a payout that already went through.
                     clearSavedForm()
