@@ -13,6 +13,7 @@ fun NeutralActionButton(
     label: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     MerchantButton(
         label = label,
@@ -21,6 +22,7 @@ fun NeutralActionButton(
         contentColor = MerchantColors.OnNeutral,
         minHeight = MerchantDimens.ButtonMinHeight,
         modifier = modifier,
+        enabled = enabled,
     )
 }
 

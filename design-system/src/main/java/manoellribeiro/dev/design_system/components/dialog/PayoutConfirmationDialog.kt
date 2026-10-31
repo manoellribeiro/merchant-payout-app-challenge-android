@@ -5,7 +5,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import manoellribeiro.dev.design_system.theme.MerchantPayoutTheme
 
-/** Modal that asks the merchant to review a payout before it is submitted. */
+/**
+ * Modal that asks the merchant to review a payout before it is submitted. Back and tapping outside only dismiss it
+ * while [isCancelEnabled] is true.
+ */
 @Composable
 fun PayoutConfirmationDialog(
     title: String,
@@ -14,8 +17,11 @@ fun PayoutConfirmationDialog(
     confirmLabel: String,
     onCancelClick: () -> Unit,
     onConfirmClick: () -> Unit,
+    message: String? = null,
+    isConfirmEnabled: Boolean = true,
+    isCancelEnabled: Boolean = true,
 ) {
-    Dialog(onDismissRequest = onCancelClick) {
+    Dialog(onDismissRequest = { if (isCancelEnabled) onCancelClick() }) {
         PayoutConfirmationCard(
             title = title,
             summaryLines = summaryLines,
@@ -23,6 +29,9 @@ fun PayoutConfirmationDialog(
             confirmLabel = confirmLabel,
             onCancelClick = onCancelClick,
             onConfirmClick = onConfirmClick,
+            message = message,
+            isConfirmEnabled = isConfirmEnabled,
+            isCancelEnabled = isCancelEnabled,
         )
     }
 }

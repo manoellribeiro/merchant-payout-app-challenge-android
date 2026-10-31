@@ -36,5 +36,31 @@
     <string name="activity_status_processing">Processing</string>
     <string name="activity_status_failed">Failed</string>
     <string name="activity_status_unknown">Unknown</string>
+
     <string name="payouts_title">Send Payout</string>
+    <string name="payout_amount_label">Amount</string>
+    <string name="payout_amount_placeholder">0.00</string>
+    <string name="payout_amount_error">Enter a valid amount, like 400.50.</string>
+    <string name="payout_currency_label">Currency</string>
+    <string name="payout_iban_label">IBAN</string>
+    <string name="payout_iban_placeholder" translatable="false">GB29NWBK60161331926819</string>
+    <string name="payout_iban_helper">Enter the destination bank account IBAN</string>
+    <string name="payout_iban_error">Enter a valid IBAN, starting with two capital letters.</string>
+    <string name="payout_confirm">Confirm</string>
+    <string name="payout_cancel">Cancel</string>
+    <string name="payout_submitting">Sending…</string>
+    <string name="payout_no_internet">No internet connection</string>
+    <string name="payout_confirm_title">Confirm Payout</string>
+    <string name="payout_summary_amount">Amount:</string>
+    <string name="payout_summary_currency">Currency:</string>
+    <string name="payout_summary_iban">IBAN:</string>
+    <string name="payout_outcome_title">Payout</string>
+    <string name="payout_success_title">Payout Completed</string>
+    <string name="payout_success_message">Your payout of %1$s has been processed successfully.</string>
+    <string name="payout_create_another">Create Another Payout</string>
+    <string name="payout_failure_title">Unable to Process Payout</string>
+    <string name="payout_error_service_unavailable">Service temporarily unavailable. Please try again later.</string>
+    <string name="payout_error_insufficient_funds">Insufficient funds.</string>
+    <string name="payout_error_unknown_outcome">We lost the connection and can\'t tell if your payout went through. Check your recent activity before trying again.</string>
+    <string name="payout_error_unexpected">Something went wrong. Please try again.</string>
 </resources>
