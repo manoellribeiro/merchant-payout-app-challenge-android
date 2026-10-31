@@ -1,4 +1,4 @@
-package com.example.androidinterview.mock
+package com.example.androidinterview.core.mock
 
 import java.time.Instant
 import java.time.temporal.ChronoUnit

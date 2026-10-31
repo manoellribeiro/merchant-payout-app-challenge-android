@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">AndroidInterview</string>
+
+    <string name="tab_home">Home</string>
+    <string name="tab_payouts">Payouts</string>
+
+    <string name="home_title">Business Account</string>
+    <string name="home_balance_title">Account Balance</string>
+    <string name="home_balance_available">Available</string>
+    <string name="home_balance_pending">Pending</string>
+    <string name="home_error">We couldn\'t load your account.</string>
+    <string name="home_balance_error">We couldn\'t load your balance.</string>
+    <string name="home_activity_title">Recent Activity</string>
+    <string name="home_activity_empty">No recent activity.</string>
+    <string name="home_activity_error">We couldn\'t load your recent activity.</string>
+    <string name="home_show_more">Show More</string>
+    <string name="home_retry">Try Again</string>
+    <string name="home_loading">Loading…</string>
+
+    <string name="transactions_title">Transactions</string>
+    <string name="payouts_title">Send Payout</string>
 </resources>

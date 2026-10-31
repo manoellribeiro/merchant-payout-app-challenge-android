@@ -47,7 +47,19 @@ android {
 }
 
 dependencies {
+    // Modules. :data is only used by AppContainer, the composition root.
+    implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":design-system"))
+
+    // Navigation
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+
     // Core
+    // Not imported directly. Older versions make Android Studio flag @Serializable classes as errors (KTIJ-31549).
+    implementation(libs.androidx.annotation.experimental)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
 
