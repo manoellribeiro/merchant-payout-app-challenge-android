@@ -18,6 +18,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.androidinterview.core.AppContainer
 import com.example.androidinterview.R
 import com.example.androidinterview.screens.home.HomeDestination
+import com.example.androidinterview.screens.transactions.TransactionsDestination
 import manoellribeiro.dev.design_system.components.bottomNavigation.BottomNavigationTab
 import manoellribeiro.dev.design_system.components.bottomNavigation.MerchantBottomNavigationBar
 import manoellribeiro.dev.design_system.components.header.ScreenTitle
@@ -40,15 +41,19 @@ fun MerchantApp(appContainer: AppContainer) {
                 BottomNavigationTab(payoutsLabel, manoellribeiro.dev.design_system.R.drawable.ic_payouts),
             )
         }
+        // Transactions is a full-screen modal, so it covers the tabs and fills the system bar areas.
+        val isModalOpen = backStack.lastOrNull() == TransactionsRoute
         Scaffold(
             modifier = Modifier.fillMaxSize(),
-            containerColor = MerchantColors.ScreenBackground,
+            containerColor = if (isModalOpen) MerchantColors.Surface else MerchantColors.ScreenBackground,
             bottomBar = {
-                MerchantBottomNavigationBar(
-                    tabs = tabs,
-                    selectedTabIndex = if (PayoutsRoute in backStack) PAYOUTS_TAB_INDEX else HOME_TAB_INDEX,
-                    onTabSelected = { index -> backStack.selectTab(index) },
-                )
+                if (!isModalOpen) {
+                    MerchantBottomNavigationBar(
+                        tabs = tabs,
+                        selectedTabIndex = if (PayoutsRoute in backStack) PAYOUTS_TAB_INDEX else HOME_TAB_INDEX,
+                        onTabSelected = { index -> backStack.selectTab(index) },
+                    )
+                }
             },
         ) { innerPadding ->
             NavDisplay(
@@ -67,8 +72,13 @@ fun MerchantApp(appContainer: AppContainer) {
                             onShowMore = dropUnlessResumed { backStack.add(TransactionsRoute) },
                         )
                     }
-                    // Placeholders until Step 2 and Step 3 replace them.
-                    entry<TransactionsRoute> { PlaceholderScreen(stringResource(R.string.transactions_title)) }
+                    entry<TransactionsRoute> {
+                        TransactionsDestination(
+                            viewModelFactory = appContainer.transactionsViewModelFactory,
+                            onDone = dropUnlessResumed { backStack.removeLastOrNull() },
+                        )
+                    }
+                    // Placeholder until Step 3 replaces it.
                     entry<PayoutsRoute> { PlaceholderScreen(stringResource(R.string.payouts_title)) }
                 },
             )

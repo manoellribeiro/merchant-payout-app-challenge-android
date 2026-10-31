@@ -17,6 +17,24 @@
     <string name="home_retry">Try Again</string>
     <string name="home_loading">Loading…</string>
 
-    <string name="transactions_title">Transactions</string>
+    <string name="transactions_title">Recent Activity</string>
+    <string name="transactions_done">Done</string>
+    <string name="transactions_today">Today</string>
+    <string name="transactions_yesterday">Yesterday</string>
+    <string name="transactions_empty">No transactions yet.</string>
+    <string name="transactions_error">We couldn\'t load your transactions.</string>
+    <string name="transactions_next_page_error">We couldn\'t load more transactions.</string>
+    <string name="transactions_loading_more">Loading more…</string>
+
+    <string name="activity_type_payout">Payout</string>
+    <string name="activity_type_deposit">Deposit</string>
+    <string name="activity_type_refund">Refund</string>
+    <string name="activity_type_fee">Fee</string>
+    <string name="activity_type_unknown">Transaction</string>
+    <string name="activity_status_completed">Completed</string>
+    <string name="activity_status_pending">Pending</string>
+    <string name="activity_status_processing">Processing</string>
+    <string name="activity_status_failed">Failed</string>
+    <string name="activity_status_unknown">Unknown</string>
     <string name="payouts_title">Send Payout</string>
 </resources>
