@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.androidinterview.R
+import com.example.androidinterview.core.biometric.rememberBiometricAuthenticator
 import manoellribeiro.dev.design_system.components.button.PrimaryActionButton
 import manoellribeiro.dev.design_system.components.dialog.PayoutConfirmationDialog
 import manoellribeiro.dev.design_system.components.dialog.PayoutSummaryLine
@@ -49,7 +50,22 @@ fun PayoutDestination(
     viewModel: PayoutViewModel = viewModel(factory = viewModelFactory),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    LaunchedEffect(Unit) { viewModel.startObservingConnectivity() }
+    val authenticator = rememberBiometricAuthenticator(viewModel::onBiometricResult)
+    val biometricTitle = stringResource(R.string.payout_biometric_title)
+    val biometricSubtitle = stringResource(R.string.payout_biometric_subtitle)
+    val biometricCancel = stringResource(R.string.payout_cancel)
+    LaunchedEffect(Unit) {
+        viewModel.startObservingConnectivity()
+        viewModel.events.collect { event ->
+            when (event) {
+                PayoutEvent.RequestBiometric -> authenticator.authenticate(
+                    title = biometricTitle,
+                    subtitle = biometricSubtitle,
+                    cancelLabel = biometricCancel,
+                )
+            }
+        }
+    }
     PayoutScreen(
         uiState = uiState,
         onAmountChange = viewModel::onAmountChange,
@@ -216,6 +232,8 @@ private fun PayoutFailureReason.messageRes(): Int = when (this) {
     PayoutFailureReason.InsufficientFunds -> R.string.payout_error_insufficient_funds
     PayoutFailureReason.UnknownOutcome -> R.string.payout_error_unknown_outcome
     PayoutFailureReason.Unexpected -> R.string.payout_error_unexpected
+    PayoutFailureReason.BiometricCancelled -> R.string.payout_error_biometric_cancelled
+    PayoutFailureReason.BiometricUnavailable -> R.string.payout_error_biometric_unavailable
 }
 
 private val PreviewEmptyForm = PayoutUiState.Form(

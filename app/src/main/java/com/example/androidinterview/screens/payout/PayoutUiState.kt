@@ -1,5 +1,6 @@
 package com.example.androidinterview.screens.payout
 
+import com.example.androidinterview.core.biometric.BiometricResult
 import com.example.androidinterview.core.formatting.toCurrencyText
 import manoellribeiro.dev.domain.error.DataError
 import manoellribeiro.dev.domain.model.Currency
@@ -37,11 +38,30 @@ fun Money.mapToPayoutConfirmationState(maskedIban: String) = PayoutConfirmationS
     maskedIban = maskedIban,
 )
 
-enum class PayoutFailureReason { ServiceUnavailable, InsufficientFunds, UnknownOutcome, Unexpected }
+/** One-shot, so a SharedFlow with no replay: a rotation must not open the prompt again. */
+sealed interface PayoutEvent {
+    data object RequestBiometric : PayoutEvent
+}
+
+enum class PayoutFailureReason {
+    ServiceUnavailable,
+    InsufficientFunds,
+    UnknownOutcome,
+    Unexpected,
+    BiometricCancelled,
+    BiometricUnavailable,
+}
 
 fun Throwable.mapToPayoutFailureReason(): PayoutFailureReason = when (this) {
     is DataError.ServiceUnavailable -> PayoutFailureReason.ServiceUnavailable
     is DataError.InsufficientFunds -> PayoutFailureReason.InsufficientFunds
     is DataError.Network -> PayoutFailureReason.UnknownOutcome
     else -> PayoutFailureReason.Unexpected
+}
+
+/** Returns null for a success, which has no failure to show. */
+fun BiometricResult.mapToPayoutFailureReason(): PayoutFailureReason? = when (this) {
+    BiometricResult.Success -> null
+    BiometricResult.Cancelled -> PayoutFailureReason.BiometricCancelled
+    BiometricResult.Unavailable -> PayoutFailureReason.BiometricUnavailable
 }

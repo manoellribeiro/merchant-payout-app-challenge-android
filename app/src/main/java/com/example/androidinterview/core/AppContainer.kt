@@ -15,6 +15,7 @@ import manoellribeiro.dev.domain.usecase.IsPayoutFormCompleteUseCase
 import manoellribeiro.dev.domain.usecase.MaskIbanUseCase
 import manoellribeiro.dev.domain.usecase.ObserveIsOnlineUseCase
 import manoellribeiro.dev.domain.usecase.ParsePayoutAmountUseCase
+import manoellribeiro.dev.domain.usecase.ShouldRequestBiometricUseCase
 import manoellribeiro.dev.domain.usecase.ValidateIbanUseCase
 
 /** The composition root: the only place that knows :data, and where implementations are chosen. */
@@ -45,6 +46,7 @@ class AppContainer(baseUrl: String, context: Context) {
                 parsePayoutAmount = ParsePayoutAmountUseCase(),
                 validateIban = ValidateIbanUseCase(),
                 maskIban = MaskIbanUseCase(),
+                shouldRequestBiometric = ShouldRequestBiometricUseCase(),
                 createPayout = CreatePayoutUseCase(merchantRepository, deviceIdentityRepository),
                 observeIsOnline = ObserveIsOnlineUseCase(connectivityService),
             )
