@@ -3,6 +3,7 @@ package com.example.androidinterview.core
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.androidinterview.screens.home.HomeViewModel
+import com.example.androidinterview.screens.transactions.TransactionsViewModel
 import manoellribeiro.dev.data.DataLayerFactory
 import manoellribeiro.dev.domain.usecase.GetActivityUseCase
 import manoellribeiro.dev.domain.usecase.GetBalanceUseCase
@@ -19,5 +20,9 @@ class AppContainer(baseUrl: String) {
                 getActivity = GetActivityUseCase(merchantRepository),
             )
         }
+    }
+
+    val transactionsViewModelFactory = viewModelFactory {
+        initializer { TransactionsViewModel(GetActivityUseCase(merchantRepository)) }
     }
 }
