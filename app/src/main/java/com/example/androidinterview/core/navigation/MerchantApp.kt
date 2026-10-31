@@ -18,12 +18,11 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.androidinterview.core.AppContainer
 import com.example.androidinterview.R
 import com.example.androidinterview.screens.home.HomeDestination
+import com.example.androidinterview.screens.payout.PayoutDestination
 import com.example.androidinterview.screens.transactions.TransactionsDestination
 import manoellribeiro.dev.design_system.components.bottomNavigation.BottomNavigationTab
 import manoellribeiro.dev.design_system.components.bottomNavigation.MerchantBottomNavigationBar
-import manoellribeiro.dev.design_system.components.header.ScreenTitle
 import manoellribeiro.dev.design_system.theme.MerchantColors
-import manoellribeiro.dev.design_system.theme.MerchantDimens
 import manoellribeiro.dev.design_system.theme.MerchantPayoutTheme
 
 private const val HOME_TAB_INDEX = 0
@@ -78,8 +77,9 @@ fun MerchantApp(appContainer: AppContainer) {
                             onDone = dropUnlessResumed { backStack.removeLastOrNull() },
                         )
                     }
-                    // Placeholder until Step 3 replaces it.
-                    entry<PayoutsRoute> { PlaceholderScreen(stringResource(R.string.payouts_title)) }
+                    entry<PayoutsRoute> {
+                        PayoutDestination(viewModelFactory = appContainer.payoutViewModelFactory)
+                    }
                 },
             )
         }
@@ -90,9 +90,4 @@ fun MerchantApp(appContainer: AppContainer) {
 private fun NavBackStack<NavKey>.selectTab(index: Int) {
     removeAll { it != HomeRoute }
     if (index == PAYOUTS_TAB_INDEX) add(PayoutsRoute)
-}
-
-@Composable
-private fun PlaceholderScreen(title: String) {
-    ScreenTitle(text = title, modifier = Modifier.padding(MerchantDimens.ScreenPadding))
 }

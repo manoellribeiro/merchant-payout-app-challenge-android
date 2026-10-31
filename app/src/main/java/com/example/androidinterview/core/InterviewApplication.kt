@@ -18,6 +18,6 @@ class InterviewApplication : Application() {
             MockServerManager.start()
             baseUrl = MockServerManager.baseUrl
         }.join()
-        appContainer = AppContainer(baseUrl)
+        appContainer = AppContainer(baseUrl, this)
     }
 }

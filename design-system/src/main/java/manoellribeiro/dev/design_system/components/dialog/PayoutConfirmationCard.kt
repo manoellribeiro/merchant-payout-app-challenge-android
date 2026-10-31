@@ -33,6 +33,9 @@ fun PayoutConfirmationCard(
     onCancelClick: () -> Unit,
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
+    message: String? = null,
+    isConfirmEnabled: Boolean = true,
+    isCancelEnabled: Boolean = true,
 ) {
     Column(
         modifier = modifier
@@ -56,16 +59,25 @@ fun PayoutConfirmationCard(
                 PayoutSummaryRow(label = line.label, value = line.value)
             }
         }
+        message?.let { text ->
+            Text(
+                text = text,
+                color = MerchantColors.Error,
+                style = MerchantTextStyles.BodyMedium,
+            )
+        }
         Row(horizontalArrangement = Arrangement.spacedBy(MerchantDimens.SpacingMedium)) {
             NeutralActionButton(
                 label = cancelLabel,
                 onClick = onCancelClick,
                 modifier = Modifier.weight(1f),
+                enabled = isCancelEnabled,
             )
             PrimaryActionButton(
                 label = confirmLabel,
                 onClick = onConfirmClick,
                 modifier = Modifier.weight(1f),
+                enabled = isConfirmEnabled,
             )
         }
     }
@@ -103,6 +115,23 @@ private val PreviewSummaryLines = listOf(
     PayoutSummaryLine(label = "Currency:", value = "GBP"),
     PayoutSummaryLine(label = "IBAN:", value = "FR12**********************1231"),
 )
+
+@Preview(showBackground = true, backgroundColor = 0xFF777777)
+@Composable
+private fun PayoutConfirmationCardOfflinePreview() {
+    MerchantPayoutTheme {
+        PayoutConfirmationCard(
+            title = "Confirm Payout",
+            summaryLines = PreviewSummaryLines,
+            cancelLabel = "Cancel",
+            confirmLabel = "Confirm",
+            onCancelClick = {},
+            onConfirmClick = {},
+            message = "No internet connection",
+            isConfirmEnabled = false,
+        )
+    }
+}
 
 @Preview(showBackground = true, backgroundColor = 0xFF777777)
 @Composable

@@ -1,13 +1,16 @@
 package manoellribeiro.dev.data
 
 import android.content.Context
+import android.net.ConnectivityManager
 import manoellribeiro.dev.data.local.createEncryptedDevicePreferences
 import manoellribeiro.dev.data.remote.MerchantApi
 import manoellribeiro.dev.data.remote.apiJson
 import manoellribeiro.dev.data.repository.DeviceIdentityRepositoryImpl
 import manoellribeiro.dev.data.repository.MerchantRepositoryImpl
+import manoellribeiro.dev.data.service.ConnectivityServiceImpl
 import manoellribeiro.dev.domain.repository.DeviceIdentityRepository
 import manoellribeiro.dev.domain.repository.MerchantRepository
+import manoellribeiro.dev.domain.service.ConnectivityService
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -30,6 +33,9 @@ object DataLayerFactory {
             .create<MerchantApi>()
         return MerchantRepositoryImpl(api)
     }
+
+    fun createConnectivityService(context: Context): ConnectivityService =
+        ConnectivityServiceImpl(context.getSystemService(ConnectivityManager::class.java))
 
     fun createDeviceIdentityRepository(context: Context): DeviceIdentityRepository {
         val applicationContext = context.applicationContext

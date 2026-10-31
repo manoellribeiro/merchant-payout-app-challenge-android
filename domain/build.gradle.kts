@@ -11,3 +11,7 @@ kotlin {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
 }
+dependencies {
+    // api because Flow is part of the public repository interfaces.
+    api(libs.kotlinx.coroutines.core)
+}
